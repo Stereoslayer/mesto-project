@@ -1,0 +1,23 @@
+.profile {
+    display: grid;
+    grid-template-areas:
+        'avatar info . add';
+    grid-template-columns: 120px max-content auto 150px;
+    column-gap: 30px;
+    align-items: center;
+    width: 100%;
+    padding-top: 40px;
+}
+
+@media screen and (max-width: 780px) {
+    .profile {
+        grid-template-areas:
+    'avatar'
+    'info'
+    'add';
+        grid-template-columns: 1fr;
+        grid-template-rows: 120px max-content auto;
+        justify-items: center;
+        padding-top: 42px;
+    }
+}
