@@ -2,11 +2,17 @@
     display: grid;
     grid-template-areas:
         'avatar info . add';
-    grid-template-columns: 120px max-content auto 150px;
+    grid-template-columns: 120px min-content auto 150px;
     column-gap: 30px;
     align-items: center;
     width: 100%;
     padding-top: 40px;
+}
+
+@media screen and (max-width: 350px) {
+    .profile {
+        max-width: 282px;
+    }
 }
 
 @media screen and (max-width: 780px) {
@@ -16,7 +22,7 @@
     'info'
     'add';
         grid-template-columns: 1fr;
-        grid-template-rows: 120px max-content auto;
+        grid-template-rows: 120px min-content auto;
         justify-items: center;
         padding-top: 42px;
     }

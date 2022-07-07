@@ -9,11 +9,13 @@
     border: 1px solid #FFFFFF;
     grid-area: edit;
     align-self: center;
+    padding: 0;
 }
 
 .profile__edit:hover {
     opacity: 0.6;
     transition: opacity linear 0.2s;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 425px) {
