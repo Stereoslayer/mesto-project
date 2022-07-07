@@ -24,7 +24,7 @@
     .popup__save-button {
         width: calc(100% - 44px);
         height: 46px;
-        font-size: 18px;
-        line-height: 1.22;
+        font-size: 14px;
+        line-height: 1.21;
     }
 }

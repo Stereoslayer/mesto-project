@@ -7,24 +7,12 @@
   <link rel="stylesheet" href="./pages/index.css">
 </head>
 <body class="page">
-<section class="popup">
-  <div class="popup__container">
-    <button class="popup__close-button"></button>
-    <h2 class="popup__title">Редактировать профиль</h2>
-    <input type="text" class="popup__form-name" name="name" id="name" placeholder="Имя профиля">
-    <label for="name"></label>
-    <input type="text" class="popup__form-about" name="about" id="about" placeholder="Род деятельности">
-    <label for="about"></label>
-    <button type="button" class="popup__save-button">Сохранить</button>
-  </div>
-</section>
 <header class="header">
   <img class="header__logo" src="./image/logo.svg" alt="Логотип Место">
-  <div class="header__line"></div>
 </header>
 <main class="content">
   <section class="profile">
-    <img class="profile__avatar" src="./image/image.jpg" alt="Жак-Ив Кусто">
+    <img class="profile__avatar" src="./image/image.jpg" alt="Аватар профиля">
     <div class="profile__info">
       <h1 class="profile__name">Жак-Ив Кусто</h1>
       <p class="profile__about">Исследователь океана</p>
@@ -78,7 +66,16 @@
   </section>
 </main>
 <footer class="footer">
-  <h2 class="footer__copyright">&copy; 2020 Mesto Russia</h2>
+  <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
 </footer>
+<div class="popup popup_opened">
+  <div class="popup__container">
+    <button class="popup__close-button"></button>
+    <h2 class="popup__title">Редактировать профиль</h2>
+    <input type="text" class="popup__form-name" name="name" placeholder="Имя профиля">
+    <input type="text" class="popup__form-about" name="about" placeholder="Род деятельности">
+    <button type="button" class="popup__save-button">Сохранить</button>
+  </div>
+</div>
 </body>
 </html>

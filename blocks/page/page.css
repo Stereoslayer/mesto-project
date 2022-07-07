@@ -1,4 +1,5 @@
 .page {
+    position: relative;
     background-color: #000;
     width: 100%;
     display: flex;
