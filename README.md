@@ -8,5 +8,6 @@
 - grid для выравнивания секций "profile" и "elements"
 - hover для всех кнопок для затемнения при наведении
 - адаптивность реализована с помощью @media
+- бэкэнд написан на JavaScript
 
 Ссылка на сайт: https://stereoslayer.github.io/mesto-project/

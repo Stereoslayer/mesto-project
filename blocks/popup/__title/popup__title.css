@@ -14,7 +14,6 @@
     .popup__title {
         font-size: 18px;
         line-height: 1.22;
-        padding: 25px 0 75px 0;
-        align-self: center;
+        padding: 25px 0 75px 22px;
     }
 }
