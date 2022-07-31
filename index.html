@@ -16,7 +16,7 @@
     <div class="profile__info">
       <h1 class="profile__name">Жак-Ив Кусто</h1>
       <p class="profile__about">Исследователь океана</p>
-      <button class="profile__edit" type="button"></button>
+      <button class="profile__edit-button" type="button"></button>
     </div>
     <button class="profile__add-button" type="button"></button>
   </section>
@@ -26,7 +26,7 @@
 <footer class="footer">
   <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
 </footer>
-<div class="popup" id="editProfile">
+<div class="popup popup_edit">
   <form class="popup__container">
     <button type="button" class="popup__close-button"></button>
     <h2 class="popup__title">Редактировать профиль</h2>
@@ -35,21 +35,21 @@
     <button type="submit" class="popup__save-button">Сохранить</button>
   </form>
 </div>
-<div class="popup" id="addCard">
-  <form class="popup__container" id="cardForm">
-    <button type="button" class="popup__close-button" id="addCardClose"></button>
+<div class="popup popup_add">
+  <form class="popup__container">
+    <button type="button" class="popup__close-button"></button>
     <h2 class="popup__title">Новое место</h2>
-    <input type="text" class="popup__form-name" name="name" placeholder="Название" id="cardName">
-    <input type="text" class="popup__form-about" name="link" placeholder="Ссылка на картинку" id="cardLink">
+    <input type="text" class="popup__form-name" name="name" placeholder="Название">
+    <input type="text" class="popup__form-about" name="link" placeholder="Ссылка на картинку">
     <button type="submit" class="popup__save-button">Создать</button>
   </form>
 </div>
-<div class="photo-popup">
-  <div class="photo-popup__container">
-    <button type="button" class="popup__close-button" id="photoPopupClose"></button>
-    <figure class="photo-popup__photo">
-      <img class="photo-popup__image">
-      <figcaption class="photo-popup__title"></figcaption>
+<div class="popup popup_image">
+  <div class="popup__photo-container">
+    <button type="button" class="popup__close-button"></button>
+    <figure class="popup__figure">
+      <img class="popup__photo">
+      <figcaption class="popup__figcaption"></figcaption>
     </figure>
   </div>
 </div>
