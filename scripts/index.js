@@ -93,7 +93,7 @@ function addEventOpenPopup(item, name, link) {
         popupPhotoImage.src = link;
         popupPhotoImage.alt = name;
         popupPhotoTitle.textContent = name;
-        imagePopup.classList.toggle('popup_opened');
+        togglePopup(imagePopup);
     })
 }
 
@@ -107,8 +107,7 @@ function createCard(name, link) {
     cardDeleteElement.addEventListener('click', addEventDelete);
     const cardLikeElement = cardElement.querySelector('.element__like');
     cardLikeElement.addEventListener('click', addEventLike);
-    const cardPhotoElement = cardElement.querySelector('.element__photo');
-    addEventOpenPopup(cardPhotoElement, name, link);
+    addEventOpenPopup(elementPhoto, name, link);
     return cardElement;
 }
 
@@ -133,12 +132,12 @@ profileCloseButton.addEventListener('click', function () {
 });
 
 cardAddButton.addEventListener('click', function () {
+    cardNameInput.value = '';
+    cardLinkInput.value = '';
     togglePopup(cardPopup);
 });
 
 cardAddCloseButton.addEventListener('click', function () {
-    cardNameInput.value = '';
-    cardLinkInput.value = '';
     togglePopup(cardPopup);
 });
 
