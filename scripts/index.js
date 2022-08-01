@@ -73,8 +73,7 @@ function addCardFormSubmitHandler(evt) {
     if (cardNameInput.value !== '' && cardLinkInput.value !== '') {
         renderCard(cardNameInput.value, cardLinkInput.value);
         togglePopup(cardPopup);
-        cardNameInput.value = '';
-        cardLinkInput.value = '';
+        cardFormElement.reset();
     }
 }
 
@@ -132,8 +131,7 @@ profileCloseButton.addEventListener('click', function () {
 });
 
 cardAddButton.addEventListener('click', function () {
-    cardNameInput.value = '';
-    cardLinkInput.value = '';
+    cardFormElement.reset();
     togglePopup(cardPopup);
 });
 
