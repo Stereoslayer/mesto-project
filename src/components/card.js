@@ -1,4 +1,4 @@
-import {addEventDelete, addEventLike, addEventOpenPopup} from "./modal";
+import {closeByEsc, imagePopup, openPopup} from "./modal";
 
 export const initialCards = [
     {
@@ -31,6 +31,22 @@ export const initialCards = [
 const cardTemplate = document.querySelector('#card').content;
 const cardElements = document.querySelector('.elements');
 
+//popups
+const popupPhotoImage = document.querySelector('.popup__photo');
+const popupPhotoTitle = document.querySelector('.popup__figcaption');
+
+//functions
+
+function addEventOpenPopup(item, name, link) {
+    item.addEventListener('click', function () {
+        popupPhotoImage.src = link;
+        popupPhotoImage.alt = name;
+        popupPhotoTitle.textContent = name;
+        openPopup(imagePopup);
+        document.addEventListener('keydown', closeByEsc);
+    })
+}
+
 export function createCard(name, link) {
     const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
     cardElement.querySelector('.element__title').textContent = name;
@@ -48,4 +64,14 @@ export function createCard(name, link) {
 export function renderCard(name, link) {
     const card = createCard(name, link);
     cardElements.prepend(card);
+}
+
+function addEventDelete(evt) {
+    const eventTarget = evt.target;
+    eventTarget.closest('.element').remove();
+}
+
+function addEventLike(evt) {
+    const eventTarget = evt.target;
+    eventTarget.classList.toggle('element__like_active');
 }
