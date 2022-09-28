@@ -14,18 +14,17 @@ import {
 import {initialCards, renderCard} from './card';
 import {enableValidation} from './validate';
 
-const popupOverlay = document.querySelectorAll('.popup');
-
 //open close buttons
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileCloseButton = profilePopup.elements.closeButton;
 const cardAddCloseButton = cardPopup.elements.closeButton;
 const cardAddButton = document.querySelector('.profile__add-button');
 const photoCloseButton = imagePopup.querySelector('.popup__close-button');
+const popupOverlay = document.querySelectorAll('.popup');
 
 //event listeners
 popupOverlay.forEach(function (item) {
-    item.addEventListener('click', closeByOverlayClick)
+    item.addEventListener('mousedown', closeByOverlayClick)
 });
 
 photoCloseButton.addEventListener('click', function () {
@@ -63,4 +62,11 @@ initialCards.forEach(function (item) {
 });
 
 //functions
-enableValidation();
+enableValidation({
+    formSelector: '.popup',
+    fieldsetSelector: '.popup__container',
+    inputSelector: '.popup__form-input',
+    submitButtonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__save-button_disabled',
+    errorClass: 'popup__input-error_active'
+});
