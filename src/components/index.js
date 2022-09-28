@@ -29,27 +29,30 @@ popupOverlay.forEach(function (item) {
 
 photoCloseButton.addEventListener('click', function () {
     togglePopup(imagePopup);
+    window.removeEventListener('keydown', closeByEsc);
 });
 
 profileEditButton.addEventListener('click', function () {
     nameInput.value = name.textContent;
     jobInput.value = job.textContent;
     togglePopup(profilePopup);
+    window.addEventListener('keydown', closeByEsc);
 });
-
-window.addEventListener('keydown', closeByEsc);
 
 profileCloseButton.addEventListener('click', function () {
     togglePopup(profilePopup);
+    window.removeEventListener('keydown', closeByEsc);
 });
 
 cardAddButton.addEventListener('click', function () {
     cardPopup.reset();
     togglePopup(cardPopup);
+    window.addEventListener('keydown', closeByEsc);
 });
 
 cardAddCloseButton.addEventListener('click', function () {
     togglePopup(cardPopup);
+    window.removeEventListener('keydown', closeByEsc);
 });
 
 profilePopup.addEventListener('submit', editProfileFormSubmitHandler);

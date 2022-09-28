@@ -1,4 +1,4 @@
-import {togglePopup} from "./utils";
+import {closeByEsc, togglePopup} from "./utils";
 import {renderCard} from './card';
 //popups
 export const imagePopup = document.querySelector('.popup_image');
@@ -51,5 +51,6 @@ export function addEventOpenPopup(item, name, link) {
         popupPhotoImage.alt = name;
         popupPhotoTitle.textContent = name;
         togglePopup(imagePopup);
+        window.addEventListener('keydown', closeByEsc);
     })
 }
