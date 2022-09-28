@@ -1,8 +1,7 @@
-.popup__form-about {
+.popup__form-input {
     border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    margin-bottom: 48px;
     padding: 0 0 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     width: calc(100% - 72px);
     font-family: 'Inter', 'Arial', sans-serif;
     font-style: normal;
@@ -12,9 +11,12 @@
     color: #000000;
 }
 
+.popup__form-input:invalid {
+    border-bottom: 1px solid #FF0000;
+}
+
 @media screen and (max-width: 530px) {
-    .popup__form-about {
+    .popup__form-input {
         width: calc(100% - 44px);
-        margin-bottom: 45px;
     }
 }
