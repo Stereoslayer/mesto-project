@@ -25,8 +25,8 @@
 <footer class="footer">
   <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
 </footer>
-<form class="popup" name="profilePopup" id="profilePopup" novalidate>
-  <fieldset class="popup__container" name="profileFieldset">
+<div class="popup" id="profilePopup">
+  <form class="popup__container" name="profilePopup" novalidate>
     <button type="button" class="popup__close-button" name="closeButton"></button>
     <h2 class="popup__title">Редактировать профиль</h2>
     <label class="popup__label">
@@ -48,10 +48,10 @@
       <span class="popup__input-error about-input-error"></span>
     </label>
     <button type="submit" class="popup__save-button">Сохранить</button>
-  </fieldset>
-</form>
-<form class="popup" name="cardPopup" id="cardPopup" novalidate>
-  <fieldset class="popup__container">
+  </form>
+</div>
+<div class="popup" id="cardPopup">
+  <form class="popup__container" name="cardPopup" novalidate>
     <button type="button" class="popup__close-button" name="closeButton"></button>
     <h2 class="popup__title">Новое место</h2>
     <label class="popup__label">
@@ -69,9 +69,9 @@
              data-error-message-nolink="Введите адрес сайта">
       <span class="popup__input-error link-input-error"></span>
     </label>
-    <button type="submit" class="popup__save-button">Создать</button>
-  </fieldset>
-</form>
+    <button type="submit" class="popup__save-button" name="cardSaveButton">Создать</button>
+  </form>
+</div>
 <div class="popup popup_image">
   <div class="popup__photo-container">
     <button type="button" class="popup__close-button"></button>

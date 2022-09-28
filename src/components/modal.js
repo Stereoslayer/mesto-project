@@ -1,9 +1,10 @@
-import {closeByEsc, togglePopup} from "./utils";
-import {renderCard} from './card';
 //popups
+import {resetError} from "./validate";
+import {config} from "./index";
+
 export const imagePopup = document.querySelector('.popup_image');
-const popupPhotoImage = document.querySelector('.popup__photo');
-const popupPhotoTitle = document.querySelector('.popup__figcaption');
+export const profilePopupWindow = document.querySelector('#profilePopup');
+export const cardPopupWindow = document.querySelector('#cardPopup');
 
 //forms
 export const profilePopup = document.forms.profilePopup;
@@ -19,38 +20,29 @@ export const jobInput = profilePopup.elements.about;
 export const cardNameInput = cardPopup.elements.name;
 export const cardLinkInput = cardPopup.elements.link;
 
-export function editProfileFormSubmitHandler(evt) {
-    evt.preventDefault();
-    name.textContent = nameInput.value;
-    job.textContent = jobInput.value;
-    togglePopup(profilePopup);
-}
+//functions
 
-export function addCardFormSubmitHandler(evt) {
-    evt.preventDefault();
-    if (cardNameInput.value !== '' && cardLinkInput.value !== '') {
-        renderCard(cardNameInput.value, cardLinkInput.value);
-        togglePopup(cardPopup);
-        cardPopup.reset();
+export function closeByEsc(evt) {
+    if (evt.key === 'Escape') {
+        const openedPopup = document.querySelector('.popup_opened');
+        closePopup(openedPopup);
     }
 }
 
-export function addEventDelete(evt) {
-    const eventTarget = evt.target;
-    eventTarget.closest('.element').remove();
+export function openPopup(popup) {
+    popup.classList.add('popup_opened');
+    document.addEventListener('keydown', closeByEsc);
+    resetError(profilePopup, config);
 }
 
-export function addEventLike(evt) {
-    const eventTarget = evt.target;
-    eventTarget.classList.toggle('element__like_active');
+export function closePopup(popup) {
+    popup.classList.remove('popup_opened');
+    document.removeEventListener('keydown', closeByEsc);
 }
 
-export function addEventOpenPopup(item, name, link) {
-    item.addEventListener('click', function () {
-        popupPhotoImage.src = link;
-        popupPhotoImage.alt = name;
-        popupPhotoTitle.textContent = name;
-        togglePopup(imagePopup);
-        window.addEventListener('keydown', closeByEsc);
-    })
+export function closeByOverlayClick(evt) {
+    if (evt.target.classList.contains('popup')) {
+        const openedPopup = document.querySelector('.popup_opened');
+        closePopup(openedPopup);
+    }
 }

@@ -11,10 +11,6 @@
     color: #000000;
 }
 
-.popup__form-input:invalid {
-    border-bottom: 1px solid #FF0000;
-}
-
 @media screen and (max-width: 530px) {
     .popup__form-input {
         width: calc(100% - 44px);
