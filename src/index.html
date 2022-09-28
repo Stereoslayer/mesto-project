@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mesto</title>
+</head>
+<body class="page">
+<header class="header">
+  <img class="header__logo" src="<%=require('./image/logo.svg')%>" alt="Логотип Место">
+</header>
+<main class="content">
+  <section class="profile">
+    <img class="profile__avatar" src="<%=require('./image/image.jpg')%>" alt="Аватар профиля">
+    <div class="profile__info">
+      <h1 class="profile__name">Жак-Ив Кусто</h1>
+      <p class="profile__about">Исследователь океана</p>
+      <button class="profile__edit-button" type="button"></button>
+    </div>
+    <button class="profile__add-button" type="button"></button>
+  </section>
+  <section class="elements">
+  </section>
+</main>
+<footer class="footer">
+  <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
+</footer>
+<form class="popup" name="profilePopup" id="profilePopup" novalidate>
+  <fieldset class="popup__container" name="profileFieldset">
+    <button type="button" class="popup__close-button" name="closeButton"></button>
+    <h2 class="popup__title">Редактировать профиль</h2>
+    <label class="popup__label">
+      <input type="text" class="popup__form-input" id="name-input" name="name" placeholder="Имя профиля" required
+             minlength="2"
+             maxlength="40"
+             pattern="^[а-яА-ЯёЁa-zA-Z \- ]+$"
+             data-error-message-type="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
+             data-error-message-empty="Вы пропустили это поле.">
+      <span class="popup__input-error name-input-error"></span>
+    </label>
+    <label class="popup__label">
+      <input type="text" class="popup__form-input" id="about-input" name="about" placeholder="Род деятельности" required
+             minlength="2"
+             maxlength="200"
+             pattern="^[а-яА-ЯёЁa-zA-Z \- ]+$"
+             data-error-message-type="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
+             data-error-message-empty="Вы пропустили это поле.">
+      <span class="popup__input-error about-input-error"></span>
+    </label>
+    <button type="submit" class="popup__save-button">Сохранить</button>
+  </fieldset>
+</form>
+<form class="popup" name="cardPopup" id="cardPopup" novalidate>
+  <fieldset class="popup__container">
+    <button type="button" class="popup__close-button" name="closeButton"></button>
+    <h2 class="popup__title">Новое место</h2>
+    <label class="popup__label">
+      <input type="text" class="popup__form-input" id="place-name-input" name="name" placeholder="Название" required
+             minlength="2"
+             maxlength="30"
+             pattern="^[а-яА-ЯёЁa-zA-Z \- ]+$"
+             data-error-message-type="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
+             data-error-message-empty="Вы пропустили это поле.">
+      <span class="popup__input-error place-name-input-error"></span>
+    </label>
+    <label class="popup__label">
+      <input type="url" class="popup__form-input" id="link-input" name="link" placeholder="Ссылка на картинку" required
+             data-error-message-empty="Вы пропустили это поле."
+             data-error-message-nolink="Введите адрес сайта">
+      <span class="popup__input-error link-input-error"></span>
+    </label>
+    <button type="submit" class="popup__save-button">Создать</button>
+  </fieldset>
+</form>
+<div class="popup popup_image">
+  <div class="popup__photo-container">
+    <button type="button" class="popup__close-button"></button>
+    <figure class="popup__figure">
+      <img class="popup__photo">
+      <figcaption class="popup__figcaption"></figcaption>
+    </figure>
+  </div>
+</div>
+<template id="card">
+  <article class="element">
+    <button class="element__delete" type="button"></button>
+    <img class="element__photo">
+    <div class="element__info">
+      <h2 class="element__title"></h2>
+      <button class="element__like" type="button"></button>
+    </div>
+  </article>
+</template>
+</body>
+</html>
