@@ -16,7 +16,7 @@ import {
     cardLinkInput
 } from './modal';
 import {initialCards, renderCard} from './card';
-import {enableValidation} from './validate';
+import {enableValidation, resetError, toggleButtonState} from './validate';
 
 //open close buttons
 const profileEditButton = document.querySelector('.profile__edit-button');
@@ -49,8 +49,9 @@ function addCardFormSubmitHandler(evt) {
     renderCard(cardNameInput.value, cardLinkInput.value);
     closePopup(cardPopupWindow);
     cardPopup.reset();
-    cardPopup.elements.cardSaveButton.setAttribute('disabled', true);
-    cardPopup.elements.cardSaveButton.classList.add('popup__save-button_disabled');
+    const buttonElement = cardPopup.querySelector(config.submitButtonSelector);
+    const inputList = Array.from(cardPopup.querySelectorAll(config.inputSelector));
+    toggleButtonState(inputList, buttonElement, config);
 }
 
 enableValidation(config);
@@ -61,13 +62,14 @@ popupOverlayList.forEach(function (item) {
 });
 
 photoCloseButton.addEventListener('click', function () {
-    openPopup(imagePopup);
+    closePopup(imagePopup);
 });
 
 profileEditButton.addEventListener('click', function () {
     nameInput.value = name.textContent;
     jobInput.value = job.textContent;
     openPopup(profilePopupWindow);
+    resetError(profilePopup, config);
 });
 
 profileCloseButton.addEventListener('click', function () {
@@ -77,6 +79,7 @@ profileCloseButton.addEventListener('click', function () {
 cardAddButton.addEventListener('click', function () {
     cardPopup.reset();
     openPopup(cardPopupWindow);
+    resetError(cardPopup, config);
 });
 
 cardAddCloseButton.addEventListener('click', function () {
