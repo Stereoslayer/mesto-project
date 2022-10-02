@@ -11,10 +11,11 @@
 </header>
 <main class="content">
   <section class="profile">
-    <img class="profile__avatar" src="<%=require('./image/image.jpg')%>" alt="Аватар профиля">
+    <img class="profile__avatar" alt="Аватар профиля">
+    <div class="profile__avatar-overlay"></div>
     <div class="profile__info">
-      <h1 class="profile__name">Жак-Ив Кусто</h1>
-      <p class="profile__about">Исследователь океана</p>
+      <h1 class="profile__name"></h1>
+      <p class="profile__about"></p>
       <button class="profile__edit-button" type="button"></button>
     </div>
     <button class="profile__add-button" type="button"></button>
@@ -47,7 +48,7 @@
              data-error-message-empty="Вы пропустили это поле.">
       <span class="popup__input-error about-input-error"></span>
     </label>
-    <button type="submit" class="popup__save-button">Сохранить</button>
+    <button type="submit" class="popup__save-button"></button>
   </form>
 </div>
 <div class="popup" id="cardPopup">
@@ -69,7 +70,22 @@
              data-error-message-nolink="Введите адрес сайта">
       <span class="popup__input-error link-input-error"></span>
     </label>
-    <button type="submit" class="popup__save-button" name="cardSaveButton">Создать</button>
+    <button type="submit" class="popup__save-button" name="cardSaveButton"></button>
+  </form>
+</div>
+<div class="popup" id="avatarPopup">
+  <form class="popup__container" name="avatarPopup" novalidate>
+    <button type="button" class="popup__close-button" name="closeButton"></button>
+    <h2 class="popup__title">Обновить аватар</h2>
+    <label class="popup__label">
+      <input type="url" class="popup__form-input" id="avatar-link-input" name="avatar-link"
+             placeholder="Ссылка на картинку"
+             required
+             data-error-message-empty="Вы пропустили это поле."
+             data-error-message-nolink="Введите адрес сайта">
+      <span class="popup__input-error avatar-link-input-error"></span>
+    </label>
+    <button type="submit" class="popup__save-button" name="cardSaveButton"></button>
   </form>
 </div>
 <div class="popup popup_image">

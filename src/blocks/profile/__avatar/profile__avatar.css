@@ -4,3 +4,7 @@
     border-radius: 50%;
     grid-area: avatar;
 }
+
+/*.profile__avatar:hover + .profile__avatar-overlay {*/
+/*    visibility: visible;*/
+/*}*/

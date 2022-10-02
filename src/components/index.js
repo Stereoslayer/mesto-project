@@ -3,6 +3,7 @@ import {
     closeByOverlayClick,
     openPopup,
     closePopup,
+    renderLoading,
     imagePopup,
     name,
     job,
@@ -13,18 +14,23 @@ import {
     profilePopupWindow,
     cardPopupWindow,
     cardNameInput,
-    cardLinkInput
+    cardLinkInput,
+    avatar, profileData, avatarPopupWindow, avatarPopup
 } from './modal';
 import {initialCards, renderCard} from './card';
 import {enableValidation, resetError, toggleButtonState} from './validate';
+import {getMyData, getCards, editMyData, editMyAvatar} from './api';
 
 //open close buttons
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileCloseButton = profilePopup.elements.closeButton;
 const cardAddCloseButton = cardPopup.elements.closeButton;
+const avatarCloseButton = avatarPopup.elements.closeButton;
 const cardAddButton = document.querySelector('.profile__add-button');
 const photoCloseButton = imagePopup.querySelector('.popup__close-button');
 const popupOverlayList = document.querySelectorAll('.popup');
+const avatarButton = document.querySelector('.profile__avatar-overlay');
+
 
 //config
 export const config = {
@@ -37,10 +43,22 @@ export const config = {
 };
 
 //functions
+export function renderMyData() {
+    name.textContent = profileData.name;
+    job.textContent = profileData.about;
+    avatar.src = profileData.avatar;
+}
+
 function editProfileFormSubmitHandler(evt) {
     evt.preventDefault();
-    name.textContent = nameInput.value;
-    job.textContent = jobInput.value;
+    renderLoading(true, profilePopup);
+    // name.textContent = nameInput.value;
+    // job.textContent = jobInput.value;
+    profileData.name = nameInput.value;
+    profileData.about = jobInput.value;
+    editMyData();
+    getMyData();
+    renderMyData();
     closePopup(profilePopupWindow);
 }
 
@@ -52,6 +70,14 @@ function addCardFormSubmitHandler(evt) {
     const buttonElement = cardPopup.querySelector(config.submitButtonSelector);
     const inputList = Array.from(cardPopup.querySelectorAll(config.inputSelector));
     toggleButtonState(inputList, buttonElement, config);
+}
+
+function editAvatarFormSubmitHandler(evt) {
+    evt.preventDefault();
+    editMyAvatar();
+    getMyData();
+    renderMyData();
+    closePopup(avatarPopupWindow);
 }
 
 enableValidation(config);
@@ -66,8 +92,8 @@ photoCloseButton.addEventListener('click', function () {
 });
 
 profileEditButton.addEventListener('click', function () {
-    nameInput.value = name.textContent;
-    jobInput.value = job.textContent;
+    nameInput.value = profileData.name;
+    jobInput.value = profileData.about;
     openPopup(profilePopupWindow);
     resetError(profilePopup, config);
 });
@@ -86,12 +112,26 @@ cardAddCloseButton.addEventListener('click', function () {
     closePopup(cardPopupWindow);
 });
 
+avatarButton.addEventListener('click', function () {
+    avatarPopup.reset();
+    openPopup(avatarPopupWindow);
+    resetError(avatarPopupWindow, config);
+})
+
+avatarCloseButton.addEventListener('click', function () {
+    closePopup(avatarPopupWindow);
+})
+
 profilePopup.addEventListener('submit', editProfileFormSubmitHandler);
 
 cardPopup.addEventListener('submit', addCardFormSubmitHandler);
 
-//render initial cards
-initialCards.forEach(function (item) {
-    renderCard(item.name, item.link)
-});
+avatarPopup.addEventListener('submit', editAvatarFormSubmitHandler);
 
+//render initial cards
+// initialCards.forEach(function (item) {
+//     renderCard(item.name, item.link)
+// });
+
+getMyData();
+getCards();
