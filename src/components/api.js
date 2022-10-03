@@ -1,100 +1,92 @@
-import {config, renderMyData} from "./index";
-import {
-    avatar,
-    cardPopup,
-    job,
-    jobInput,
-    name,
-    nameInput,
-    profileData,
-    avatarPopup,
-    writeMyData,
-    renderLoading
-} from "./modal";
-import {renderCard} from "./card";
-
-const token = '4912f186-aa3c-472a-98c3-6f2a2bb245d9';
-
-// export function api() {
-//     fetch('https://nomoreparties.co/v1/plus-cohort-15/cards', {
-//         headers: {
-//             authorization: '4912f186-aa3c-472a-98c3-6f2a2bb245d9'
-//         }
-//     })
-//         .then(res => res.json())
-//         .then((result) => {
-//             console.log(result);
-//         });
-// }
-
-export function getMyData() {
-    fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
-        headers: {
-            authorization: token
-        }
-    })
-        .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status);
-        })
-        .then((result) => {
-            console.log(result);
-            writeMyData(result);
-            renderMyData();
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-        .finally(() => {
-            renderLoading();
-        })
+export const apiConfig = {
+    baseUrl: 'https://nomoreparties.co/v1/plus-cohort-15',
+    token: '4912f186-aa3c-472a-98c3-6f2a2bb245d9',
+    id: null
 }
 
-export function editMyData() {
-    fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
+export const getProfile = () => {
+    return fetch(`${apiConfig.baseUrl}/users/me`, {
+        headers: {
+            authorization: apiConfig.token
+        }
+    })
+}
+
+export const editProfile = (name, about) => {
+    return fetch(`${apiConfig.baseUrl}/users/me`, {
         method: 'PATCH',
         headers: {
-            authorization: token,
+            authorization: apiConfig.token,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            name: profileData.name,
-            about: profileData.about
+            name,
+            about
         })
     })
 }
 
-export function editMyAvatar() {
-    fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me/avatar', {
+export const editProfilePic = (avatar) => {
+    return fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
         method: 'PATCH',
         headers: {
-            authorization: token,
+            authorization: apiConfig.token,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            avatar: avatarPopup.querySelector(config.inputSelector).value
+            avatar
         })
     })
 }
 
-export function getCards() {
-    fetch('https://nomoreparties.co/v1/plus-cohort-15/cards', {
+export const getCards = () => {
+    return fetch(`${apiConfig.baseUrl}/cards`, {
         headers: {
-            authorization: token
+            authorization: apiConfig.token
         }
     })
-        .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status);
+}
+
+export const addCard = (name, link) => {
+    return fetch(`${apiConfig.baseUrl}/cards`, {
+        method: 'POST',
+        headers: {
+            authorization: apiConfig.token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name,
+            link
         })
-        .then((result) => {
-            console.log(result);
-            result.forEach((result) => {
-                renderCard(result.name, result.link);
-            })
-        })
+    })
+}
+
+export const deleteCard = (cardId) => {
+    return fetch(`${apiConfig.baseUrl}/cards/${cardId}`, {
+        method: 'DELETE',
+        headers: {
+            authorization: apiConfig.token,
+            'Content-Type': 'application/json'
+        }
+    })
+}
+
+export const addLike = (cardId) => {
+    return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
+        method: 'PUT',
+        headers: {
+            authorization: apiConfig.token,
+            'Content-Type': 'application/json'
+        }
+    })
+}
+
+export const deleteLike = (cardId) => {
+    return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
+        method: 'DELETE',
+        headers: {
+            authorization: apiConfig.token,
+            'Content-Type': 'application/json'
+        }
+    })
 }

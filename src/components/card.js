@@ -1,31 +1,13 @@
-import {closeByEsc, imagePopup, openPopup} from "./modal";
-
-// export const initialCards = [
-//     {
-//         name: 'Архыз',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-//     },
-//     {
-//         name: 'Челябинская область',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-//     },
-//     {
-//         name: 'Иваново',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-//     },
-//     {
-//         name: 'Камчатка',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-//     },
-//     {
-//         name: 'Холмогорский район',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-//     },
-//     {
-//         name: 'Байкал',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-//     }
-// ];
+import {
+    avatarPopup,
+    cardDeletePopupWindow, cardPopupWindow,
+    closeByEsc, closePopup,
+    cardDeletePopup,
+    imagePopup,
+    openPopup,
+    renderLoading
+} from "./modal";
+import {addLike, deleteLike, apiConfig, deleteCard} from "./api";
 
 //card
 const cardTemplate = document.querySelector('#card').content;
@@ -47,31 +29,103 @@ function addEventOpenPopup(item, name, link) {
     })
 }
 
-export function createCard(name, link) {
+function deleteCardSubmitHandler(evt, card, cardElement) {
+    evt.preventDefault();
+    renderLoading(cardDeletePopup, 'Удаление...');
+    deleteCard(card._id)
+        .then((res) => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(res.status);
+        })
+        .then((res) => {
+            deleteCardElement(cardElement);
+            closePopup(cardDeletePopupWindow);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            renderLoading(cardDeletePopup, 'Да');
+        })
+}
+
+export function createCard(card) {
     const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
-    cardElement.querySelector('.element__title').textContent = name;
+    cardElement.querySelector('.element__title').textContent = card.name;
     const elementPhoto = cardElement.querySelector('.element__photo');
-    elementPhoto.src = link;
-    elementPhoto.setAttribute('alt', name);
-    const cardDeleteElement = cardElement.querySelector('.element__delete');
-    cardDeleteElement.addEventListener('click', addEventDelete);
+    elementPhoto.src = card.link;
+    elementPhoto.setAttribute('alt', card.name);
+    const likeNum = cardElement.querySelector('.element__like-counter');
     const cardLikeElement = cardElement.querySelector('.element__like');
-    cardLikeElement.addEventListener('click', addEventLike);
-    addEventOpenPopup(elementPhoto, name, link);
+    cardLikeElement.addEventListener('click', function (evt) {
+        addEventLike(evt, card, card._id, likeNum);
+    });
+    likeNum.textContent = card.likes.length;
+    if ((card.likes.find(x => x._id === apiConfig.id))) {
+        cardLikeElement.classList.add('element__like_active');
+    }
+    if ((card.owner._id === apiConfig.id)) {
+        const cardDeleteElement = cardElement.querySelector('.element__delete');
+        cardDeleteElement.addEventListener('click', function (evt) {
+            openDeleteCardPopup();
+        });
+        cardDeleteElement.classList.add('element__delete_visible');
+        cardDeletePopup.addEventListener('submit', function (evt) {
+            deleteCardSubmitHandler(evt, card, cardElement);
+        });
+    }
+    addEventOpenPopup(elementPhoto, card.name, card.link);
     return cardElement;
 }
 
-export function renderCard(name, link) {
-    const card = createCard(name, link);
-    cardElements.prepend(card);
+export function renderCard(card) {
+    const newCard = createCard(card);
+    cardElements.prepend(newCard);
 }
 
-function addEventDelete(evt) {
-    const eventTarget = evt.target;
-    eventTarget.closest('.element').remove();
+// function addEventDelete(evt) {
+//     const eventTarget = evt.target;
+//     eventTarget.closest('.element').remove();
+// }
+
+function openDeleteCardPopup() {
+    openPopup(cardDeletePopupWindow);
 }
 
-function addEventLike(evt) {
-    const eventTarget = evt.target;
-    eventTarget.classList.toggle('element__like_active');
+export function deleteCardElement(cardElement) {
+    cardElement.closest('.element').remove();
+}
+
+function addEventLike(evt, card, cardId, likeNum) {
+    if (!card.likes.find(x => x._id === apiConfig.id)) {
+        addLike(cardId)
+            .then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(res.status);
+            })
+            .then((res) => {
+                const eventTarget = evt.target;
+                eventTarget.classList.add('element__like_active');
+                likeNum.textContent = res.likes.length;
+                card.likes = res.likes;
+            })
+    } else {
+        deleteLike(cardId)
+            .then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(res.status);
+            })
+            .then((res) => {
+                const eventTarget = evt.target;
+                eventTarget.classList.remove('element__like_active');
+                likeNum.textContent = res.likes.length;
+                card.likes = res.likes;
+            })
+    }
 }

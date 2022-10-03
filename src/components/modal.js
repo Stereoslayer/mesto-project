@@ -1,44 +1,33 @@
-
-import {resetError} from "./validate";
-import {config} from "./index";
 //popups
 export const imagePopup = document.querySelector('.popup_image');
 export const profilePopupWindow = document.querySelector('#profilePopup');
 export const cardPopupWindow = document.querySelector('#cardPopup');
 export const avatarPopupWindow = document.querySelector('#avatarPopup');
+export const cardDeletePopupWindow = document.querySelector('#deleteCardPopup');
 
 //forms
 export const profilePopup = document.forms.profilePopup;
 export const cardPopup = document.forms.cardPopup;
 export const avatarPopup = document.forms.avatarPopup;
+export const cardDeletePopup = document.forms.deleteCardPopup;
 
 //profile data
 export const name = document.querySelector('.profile__name');
 export const job = document.querySelector('.profile__about');
 export const avatar = document.querySelector('.profile__avatar');
-export let profileData = [{}];
 
 //inputs
 export const nameInput = profilePopup.elements.name;
 export const jobInput = profilePopup.elements.about;
 export const cardNameInput = cardPopup.elements.name;
 export const cardLinkInput = cardPopup.elements.link;
+export const avatarUrlInput = avatarPopup.elements.avatarLink;
 
 //functions
 
-export function renderLoading(isLoading, popup) {
+export function renderLoading(popup, text) {
     const buttonElement = popup.querySelector('.popup__save-button');
-    if (isLoading) {
-        buttonElement.classList.add('popup__save-button_loading');
-    } else {
-        buttonElement.classList.remove('popup__save-button_loading');
-    }
-}
-
-export function writeMyData(result) {
-    profileData.name = result.name;
-    profileData.about = result.about;
-    profileData.avatar = result.avatar;
+    buttonElement.textContent = text;
 }
 
 export function closeByEsc(evt) {

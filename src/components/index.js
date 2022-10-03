@@ -3,7 +3,6 @@ import {
     closeByOverlayClick,
     openPopup,
     closePopup,
-    renderLoading,
     imagePopup,
     name,
     job,
@@ -15,17 +14,18 @@ import {
     cardPopupWindow,
     cardNameInput,
     cardLinkInput,
-    avatar, profileData, avatarPopupWindow, avatarPopup
+    avatar, avatarPopupWindow, avatarPopup, avatarUrlInput, renderLoading, cardDeletePopup, cardDeletePopupWindow,
 } from './modal';
-import {initialCards, renderCard} from './card';
+import {deleteCardElement, renderCard} from './card';
 import {enableValidation, resetError, toggleButtonState} from './validate';
-import {getMyData, getCards, editMyData, editMyAvatar} from './api';
+import {getProfile, getCards, editProfile, editProfilePic, addCard, deleteCard, apiConfig} from './api';
 
 //open close buttons
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileCloseButton = profilePopup.elements.closeButton;
 const cardAddCloseButton = cardPopup.elements.closeButton;
 const avatarCloseButton = avatarPopup.elements.closeButton;
+const deleteCardCloseButton = cardDeletePopup.elements.closeButton;
 const cardAddButton = document.querySelector('.profile__add-button');
 const photoCloseButton = imagePopup.querySelector('.popup__close-button');
 const popupOverlayList = document.querySelectorAll('.popup');
@@ -43,41 +43,80 @@ export const config = {
 };
 
 //functions
-export function renderMyData() {
-    name.textContent = profileData.name;
-    job.textContent = profileData.about;
-    avatar.src = profileData.avatar;
+export function updateProfile(data) {
+    name.textContent = data.name;
+    job.textContent = data.about;
+    avatar.src = data.avatar;
 }
 
 function editProfileFormSubmitHandler(evt) {
     evt.preventDefault();
-    renderLoading(true, profilePopup);
-    // name.textContent = nameInput.value;
-    // job.textContent = jobInput.value;
-    profileData.name = nameInput.value;
-    profileData.about = jobInput.value;
-    editMyData();
-    getMyData();
-    renderMyData();
-    closePopup(profilePopupWindow);
+    renderLoading(profilePopup, 'Сохранение...');
+    editProfile(nameInput.value, jobInput.value)
+        .then((res) => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(res.status);
+        })
+        .then((res) => {
+            updateProfile(res);
+            closePopup(profilePopupWindow);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            renderLoading(profilePopup, 'Сохранить');
+        })
 }
 
 function addCardFormSubmitHandler(evt) {
     evt.preventDefault();
-    renderCard(cardNameInput.value, cardLinkInput.value);
-    closePopup(cardPopupWindow);
-    cardPopup.reset();
-    const buttonElement = cardPopup.querySelector(config.submitButtonSelector);
-    const inputList = Array.from(cardPopup.querySelectorAll(config.inputSelector));
-    toggleButtonState(inputList, buttonElement, config);
+    renderLoading(cardPopup, 'Сохранение...');
+    addCard(cardNameInput.value, cardLinkInput.value)
+        .then((res) => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(res.status);
+        })
+        .then((res) => {
+            renderCard(res);
+            closePopup(cardPopupWindow);
+            cardPopup.reset();
+            const buttonElement = cardPopup.querySelector(config.submitButtonSelector);
+            const inputList = Array.from(cardPopup.querySelectorAll(config.inputSelector));
+            toggleButtonState(inputList, buttonElement, config);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            renderLoading(cardPopup, 'Создать');
+        })
 }
 
 function editAvatarFormSubmitHandler(evt) {
     evt.preventDefault();
-    editMyAvatar();
-    getMyData();
-    renderMyData();
-    closePopup(avatarPopupWindow);
+    renderLoading(avatarPopup, 'Сохранение...');
+    editProfilePic(avatarUrlInput.value)
+        .then((res) => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(res.status);
+        })
+        .then((res) => {
+            updateProfile(res);
+            closePopup(avatarPopupWindow);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            renderLoading(avatarPopup, 'Сохранить');
+        })
 }
 
 enableValidation(config);
@@ -92,8 +131,8 @@ photoCloseButton.addEventListener('click', function () {
 });
 
 profileEditButton.addEventListener('click', function () {
-    nameInput.value = profileData.name;
-    jobInput.value = profileData.about;
+    nameInput.value = name.textContent;
+    jobInput.value = job.textContent;
     openPopup(profilePopupWindow);
     resetError(profilePopup, config);
 });
@@ -122,16 +161,44 @@ avatarCloseButton.addEventListener('click', function () {
     closePopup(avatarPopupWindow);
 })
 
+deleteCardCloseButton.addEventListener('click', function () {
+    closePopup(cardDeletePopupWindow);
+})
+
 profilePopup.addEventListener('submit', editProfileFormSubmitHandler);
 
 cardPopup.addEventListener('submit', addCardFormSubmitHandler);
 
 avatarPopup.addEventListener('submit', editAvatarFormSubmitHandler);
 
-//render initial cards
-// initialCards.forEach(function (item) {
-//     renderCard(item.name, item.link)
-// });
+getProfile()
+    .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(res.status);
+    })
+    .then((res) => {
+        updateProfile(res);
+        apiConfig.id = res._id;
+        getCards()
+            .then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(res.status);
+            })
+            .then((res) => {
+                res.reverse().forEach((res) => {
+                    renderCard(res);
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    })
+    .catch((err) => {
+        console.log(err);
+    })
 
-getMyData();
-getCards();
+
