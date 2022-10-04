@@ -14,11 +14,17 @@ import {
     cardPopupWindow,
     cardNameInput,
     cardLinkInput,
-    avatar, avatarPopupWindow, avatarPopup, avatarUrlInput, renderLoading, cardDeletePopup, cardDeletePopupWindow,
+    avatar,
+    avatarPopupWindow,
+    avatarPopup,
+    avatarUrlInput,
+    renderLoading,
+    cardDeletePopup,
+    cardDeletePopupWindow,
 } from './modal';
-import {deleteCardElement, renderCard} from './card';
+import {renderCard} from './card';
 import {enableValidation, resetError, toggleButtonState} from './validate';
-import {getProfile, getCards, editProfile, editProfilePic, addCard, deleteCard, apiConfig} from './api';
+import {getProfile, getCards, editProfile, editProfilePic, addCard, apiConfig} from './api';
 
 //open close buttons
 const profileEditButton = document.querySelector('.profile__edit-button');
@@ -54,12 +60,6 @@ function editProfileFormSubmitHandler(evt) {
     renderLoading(profilePopup, 'Сохранение...');
     editProfile(nameInput.value, jobInput.value)
         .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status);
-        })
-        .then((res) => {
             updateProfile(res);
             closePopup(profilePopupWindow);
         })
@@ -75,12 +75,6 @@ function addCardFormSubmitHandler(evt) {
     evt.preventDefault();
     renderLoading(cardPopup, 'Сохранение...');
     addCard(cardNameInput.value, cardLinkInput.value)
-        .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status);
-        })
         .then((res) => {
             renderCard(res);
             closePopup(cardPopupWindow);
@@ -101,12 +95,6 @@ function editAvatarFormSubmitHandler(evt) {
     evt.preventDefault();
     renderLoading(avatarPopup, 'Сохранение...');
     editProfilePic(avatarUrlInput.value)
-        .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(res.status);
-        })
         .then((res) => {
             updateProfile(res);
             closePopup(avatarPopupWindow);
@@ -171,34 +159,16 @@ cardPopup.addEventListener('submit', addCardFormSubmitHandler);
 
 avatarPopup.addEventListener('submit', editAvatarFormSubmitHandler);
 
-getProfile()
-    .then((res) => {
-        if (res.ok) {
-            return res.json();
-        }
-        return Promise.reject(res.status);
-    })
-    .then((res) => {
-        updateProfile(res);
-        apiConfig.id = res._id;
-        getCards()
-            .then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(res.status);
-            })
-            .then((res) => {
-                res.reverse().forEach((res) => {
-                    renderCard(res);
-                })
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+Promise.all([
+    getProfile(),
+    getCards()])
+    .then(([profile, cards]) => {
+        updateProfile(profile);
+        apiConfig.id = profile._id;
+        cards.reverse().forEach((cards) => {
+            renderCard(cards);
+        })
     })
     .catch((err) => {
         console.log(err);
     })
-
-
