@@ -7,6 +7,14 @@ export const apiConfig = {
     id: null
 }
 
+// function getResponseData(res) {
+//     if (res.ok) {
+//         console.log(res);
+//         return res.json();
+//     }
+//     return Promise.reject(`Ошибка: ${res.status}`);
+// }
+
 export const getProfile = () => {
     return fetch(`${apiConfig.baseUrl}/users/me`, {
         headers: apiConfig.headers
@@ -15,7 +23,7 @@ export const getProfile = () => {
             if (profile.ok) {
                 return profile.json();
             }
-            return Promise.reject(profile.status);
+            return Promise.reject(`Ошибка: ${profile.status}`);
         })
 }
 
@@ -32,7 +40,7 @@ export const editProfile = (name, about) => {
             if (res.ok) {
                 return res.json();
             }
-            return Promise.reject(res.status);
+            return Promise.reject(`Ошибка: ${res.status}`);
         })
 }
 
@@ -48,7 +56,7 @@ export const editProfilePic = (avatar) => {
             if (res.ok) {
                 return res.json();
             }
-            return Promise.reject(res.status);
+            return Promise.reject(`Ошибка: ${res.status}`);
         })
 }
 
@@ -60,7 +68,7 @@ export const getCards = () => {
             if (cards.ok) {
                 return cards.json();
             }
-            return Promise.reject(cards.status);
+            return Promise.reject(`Ошибка: ${cards.status}`);
         })
 }
 
@@ -77,7 +85,7 @@ export const addCard = (name, link) => {
             if (res.ok) {
                 return res.json();
             }
-            return Promise.reject(res.status);
+            return Promise.reject(`Ошибка: ${res.status}`);
         })
 }
 
@@ -90,7 +98,7 @@ export const deleteCard = (cardId) => {
             if (res.ok) {
                 return res.json();
             }
-            return Promise.reject(res.status);
+            return Promise.reject(`Ошибка: ${res.status}`);
         })
 }
 
@@ -103,7 +111,7 @@ export const addLike = (cardId) => {
             if (res.ok) {
                 return res.json();
             }
-            return Promise.reject(res.status);
+            return Promise.reject(`Ошибка: ${res.status}`);
         })
 }
 
@@ -116,6 +124,6 @@ export const deleteLike = (cardId) => {
             if (res.ok) {
                 return res.json();
             }
-            return Promise.reject(res.status);
+            return Promise.reject(`Ошибка: ${res.status}`);
         })
 }

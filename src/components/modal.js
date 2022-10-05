@@ -1,6 +1,4 @@
 //popups
-import {controller} from "./card";
-
 export const imagePopup = document.querySelector('.popup_image');
 export const profilePopupWindow = document.querySelector('#profilePopup');
 export const cardPopupWindow = document.querySelector('#cardPopup');

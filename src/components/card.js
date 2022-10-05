@@ -10,6 +10,7 @@ import {addLike, deleteLike, apiConfig, deleteCard} from "./api";
 
 
 let cardDeleteId = null;
+let cardDeleteElement = null;
 
 //card
 const cardTemplate = document.querySelector('#card').content;
@@ -30,22 +31,19 @@ function addEventOpenPopup(item, name, link) {
     })
 }
 
-function deleteCardSubmitHandler(evt, card, cardElement) {
-    evt.preventDefault();
-    if (cardDeleteId === card._id) {
-        renderLoading(cardDeletePopup, 'Удаление...');
-        deleteCard(card._id)
-            .then((res) => {
-                deleteCardElement(cardElement);
-                closePopup(cardDeletePopupWindow);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-            .finally(() => {
-                renderLoading(cardDeletePopup, 'Да');
-            })
-    }
+export function deleteCardSubmitHandler() {
+    renderLoading(cardDeletePopup, 'Удаление...');
+    deleteCard(cardDeleteId)
+        .then((res) => {
+            deleteCardElement(cardDeleteElement);
+            closePopup(cardDeletePopupWindow);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            renderLoading(cardDeletePopup, 'Да');
+        })
 }
 
 export function createCard(card) {
@@ -65,13 +63,10 @@ export function createCard(card) {
     }
     if (card.owner._id === apiConfig.id) {
         const cardDeleteElement = cardElement.querySelector('.element__delete');
-        cardDeleteElement.addEventListener('click', function (evt) {
-            openDeleteCardPopup(card);
+        cardDeleteElement.addEventListener('click', function () {
+            openDeleteCardPopup(card, cardElement);
         });
         cardDeleteElement.classList.add('element__delete_visible');
-        cardDeletePopup.addEventListener('submit', function (evt) {
-            deleteCardSubmitHandler(evt, card, cardElement);
-        });
     }
     addEventOpenPopup(elementPhoto, card.name, card.link);
     return cardElement;
@@ -82,8 +77,9 @@ export function renderCard(card) {
     cardElements.prepend(newCard);
 }
 
-function openDeleteCardPopup(card) {
+function openDeleteCardPopup(card, cardElement) {
     cardDeleteId = card._id;
+    cardDeleteElement = cardElement;
     openPopup(cardDeletePopupWindow);
 }
 
