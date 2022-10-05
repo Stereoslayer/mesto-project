@@ -22,7 +22,7 @@ import {
     cardDeletePopup,
     cardDeletePopupWindow,
 } from './modal';
-import {renderCard} from './card';
+import {renderCard, deleteCardSubmitHandler} from './card';
 import {enableValidation, resetError, toggleButtonState} from './validate';
 import {getProfile, getCards, editProfile, editProfilePic, addCard, apiConfig} from './api';
 
@@ -158,6 +158,10 @@ profilePopup.addEventListener('submit', editProfileFormSubmitHandler);
 cardPopup.addEventListener('submit', addCardFormSubmitHandler);
 
 avatarPopup.addEventListener('submit', editAvatarFormSubmitHandler);
+
+cardDeletePopup.addEventListener('submit', function () {
+    deleteCardSubmitHandler();
+});
 
 Promise.all([
     getProfile(),
